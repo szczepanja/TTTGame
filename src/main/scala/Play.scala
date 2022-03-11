@@ -3,5 +3,6 @@ object Play extends App {
 
   while (true) {
     println("Tic Tac Toe game. Enter the number. Player O starts")
+    game.renderBoard(game.elements)
   }
 }
