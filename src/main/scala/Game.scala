@@ -5,7 +5,7 @@ class Game {
   val elements: Array[Char] = ('1' to '9').toArray
   val newElements: Array[Char] = ('1' to '9').toArray
 
-  val winningList: List[List[Int]] = List(
+  val winningCombinations: List[List[Int]] = List(
     List(0, 1, 2),
     List(3, 4, 5),
     List(6, 7, 8),
@@ -41,31 +41,34 @@ class Game {
     }
   }
 
+  def continue(): Unit = {
+    val answer = readLine("Want to play again? (Y/n) ")
+
+    if (answer == "Y" || answer == "y") {
+      println("Enter the number. Player O starts")
+      renderBoard(newElements)
+      changeTurn(newElements)
+    } else {
+      exit()
+    }
+  }
+
   def changeTurn(table: Array[Char]): Unit = {
     table(readMove(table)) = changePlayer(table)
     renderBoard(table)
 
-    if (!winner(table)) {
+    if (!isGameFinished(table)) {
       changeTurn(table)
     } else {
       renderBoard(table)
     }
   }
 
-  def winner(table: Array[Char]): Boolean = {
-    winningList.foreach(combination => {
-      if (combination.forall(table(_) == table(combination(0)))) {
-        println("Player " + table(combination(0)) + " wins")
-
-        val answer = readLine("Want to play again? (Y/n) ")
-
-        if (answer == "Y" || answer == "y") {
-          println("Enter the number. Player O starts")
-          renderBoard(newElements)
-          changeTurn(newElements)
-        } else {
-          exit()
-        }
+  def isGameFinished(table: Array[Char]): Boolean = {
+    winningCombinations.foreach(combination => {
+      if (combination.forall(table(_) == table(combination.head))) {
+        println("Win")
+        continue()
       }
     })
     false
