@@ -1,3 +1,5 @@
+import scala.io.StdIn.readLine
+
 class Game {
   val elements: Array[Char] = ('1' to '9').toArray
 
@@ -19,5 +21,21 @@ class Game {
   def changePlayer(table: Array[Char]): Char = {
     val nextTurn = table.count(_.isDigit)
     if (nextTurn % 2 == 0) 'X' else 'O'
+  }
+
+  def readMove(table: Array[Char]): Int = {
+    val number = readLine("Choose number: ")
+
+    if (number.matches("[1-9]")) {
+      if (table(number.toInt - 1).isDigit) {
+        number.toInt - 1
+      } else {
+        println("Taken! ☹☹☹")
+        readMove(table)
+      }
+    } else {
+      println("Take number from 1 to 9")
+      readMove(table)
+    }
   }
 }
