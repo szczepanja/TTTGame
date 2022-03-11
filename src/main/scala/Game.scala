@@ -1,7 +1,9 @@
 import scala.io.StdIn.readLine
+import scala.sys.exit
 
 class Game {
   val elements: Array[Char] = ('1' to '9').toArray
+  val newElements: Array[Char] = ('1' to '9').toArray
 
   val winningList: List[List[Int]] = List(
     List(0, 1, 2),
@@ -37,5 +39,35 @@ class Game {
       println("Take number from 1 to 9")
       readMove(table)
     }
+  }
+
+  def changeTurn(table: Array[Char]): Unit = {
+    table(readMove(table)) = changePlayer(table)
+    renderBoard(table)
+
+    if (!winner(table)) {
+      changeTurn(table)
+    } else {
+      renderBoard(table)
+    }
+  }
+
+  def winner(table: Array[Char]): Boolean = {
+    winningList.foreach(combination => {
+      if (combination.forall(table(_) == table(combination(0)))) {
+        println("Player " + table(combination(0)) + " wins")
+
+        val answer = readLine("Want to play again? (Y/n) ")
+
+        if (answer == "Y" || answer == "y") {
+          println("Enter the number. Player O starts")
+          renderBoard(newElements)
+          changeTurn(newElements)
+        } else {
+          exit()
+        }
+      }
+    })
+    false
   }
 }
