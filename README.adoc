@@ -10,6 +10,6 @@
 
 === Bugs
 
-. Draw is not rendering
+* Draw is not rendering
 
-. Cannot rerender elements after Gamer wants to continue
+* Cannot rerender elements after Gamer wants to continue
